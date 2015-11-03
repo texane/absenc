@@ -1,0 +1,11 @@
+vhdl work ../../src/absenc_pkg.vhd
+vhdl work ../../src/absenc_utils.vhd
+vhdl work ../../src/absenc_master.vhd
+vhdl work ../../src/absenc_master_endat.vhd
+vhdl work ../../src/absenc_master_biss.vhd
+vhdl work ../../src/absenc_master_ssi.vhd
+vhdl work ../../src/absenc_slave.vhd
+vhdl work ../../src/absenc_slave_endat.vhd
+vhdl work ../../src/absenc_slave_biss.vhd
+vhdl work ../../src/absenc_slave_ssi.vhd
+vhdl work ../common/main.vhd
