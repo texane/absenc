@@ -165,7 +165,7 @@ begin
  wait until rising_edge(clk);
  
  miso <= '0';
- count_top <= (others => '0');
+ count_top <= (count_top'range => '0');
  count_rst <= '0';
  piso_load <= '0';
 

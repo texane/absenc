@@ -167,7 +167,7 @@ begin
  wait until rising_edge(clk);
 
  ma_clk_rst_en <= '0';
- count_top <= (others => '0');
+ count_top <= (count_top'range => '0');
  count_rst <= '0';
  sipo_latch <= '0';
  is_gray <= is_gray;

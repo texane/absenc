@@ -161,10 +161,10 @@ begin
  wait until rising_edge(clk);
  
  miso <= '0';
- count_top <= (others => '0');
+ count_top <= (count_top'range => '0');
  count_rst <= '0';
  piso_load <= '0';
- piso_ini <= (others => '0');
+ piso_ini <= (piso_ini'range => '0');
  is_dot_bit <= is_dot_bit;
 
  case curr_state is

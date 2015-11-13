@@ -408,8 +408,8 @@ begin
  gate <= '0';
  tm_top <= to_unsigned(DEFAULT_TM_TOP, tm_top'length);
  count_rst <= '0';
- count_top <= (others => '0');
- piso_ini <= (others => '0');
+ count_top <= (count_top'range => '0');
+ piso_ini <= (piso_ini'range => '0');
  piso_load <= '0';
 
  for i in 0 to ENC_MUX_COUNT - 1 loop
