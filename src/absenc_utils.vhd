@@ -211,7 +211,7 @@ signal is_signed: std_logic;
 
 begin
 
-is_signed <= data_in(to_integer(data_len) - 1);
+is_signed <= data_in(to_integer(data_len) - 1) when (data_len /= 0) else '0';
 
 process(is_signed, data_in)
 begin
