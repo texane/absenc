@@ -211,7 +211,21 @@ signal is_signed: std_logic;
 
 begin
 
-is_signed <= data_in(to_integer(data_len) - 1) when (data_len > 0) else '0';
+process(data_in, data_len)
+begin
+ -- fixme: modelsim fails without this check
+ -- synthesis translate_off
+ is_signed <= '0';
+ if data_len > 0 then
+ -- synthesis translate_on
+
+ is_signed <= data_in(to_integer(data_len) - 1);
+ 
+ -- synthesis translate_off
+ end if;
+ -- synthesis translate_on
+
+end process;
 
 process(is_signed, data_in)
 begin
