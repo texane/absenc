@@ -113,7 +113,7 @@ begin
 end process;
 
 
-process(curr_state, count_match, tm_match)
+process(curr_state, count_match, tm_match, miso)
 begin
  
  next_state <= curr_state;
@@ -131,8 +131,9 @@ begin
    next_state <= BISS_START;
 
   when BISS_START =>
-   -- TODO: check miso == 1
-   next_state <= BISS_CDS;
+   if miso = '1' then
+    next_state <= BISS_CDS;
+   end if;
 
   when BISS_CDS =>
    next_state <= BISS_DATA;

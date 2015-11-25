@@ -1,6 +1,6 @@
 # source endat.tcl
-# source biss.tcl
-source ssi.tcl
+source biss.tcl
+# source ssi.tcl
 
 # wave add /main/master/latched_data
 # wave add /main/master/msb_data
