@@ -16,3 +16,4 @@ source biss.tcl
 wave add /main/clk
 wave add /main/ma_clk
 wave add /main/ma_delayed_clk
+wave add /main/master/ma_half_match

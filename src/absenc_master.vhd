@@ -196,22 +196,20 @@ report "ma_fdiv'length too large" severity failure;
 -- generate edges using a counter from ma_fdiv/2 to 0
 
 ma_half_fdiv <= ma_fdiv srl 1;
+ma_half_match <= '1' when ma_half_count = 1 else '0';
 
 process
 begin
  wait until rising_edge(clk);
 
- ma_half_match <= '0';
-
- if ((rst or ma_clk_rst_en) = '1') then
+ if ((rst or ma_clk_rst_en or ma_half_match) = '1') then
   ma_half_count <= ma_half_fdiv;
- elsif (ma_half_count = 0) then
-  ma_half_count <= ma_half_fdiv;
-  ma_half_match <= '1';
  else
   ma_half_count <= ma_half_count - 1;
  end if;
+
 end process;
+
 
 process
 begin
@@ -219,8 +217,8 @@ begin
 
  if ((rst or ma_clk_rst_en) = '1') then
   ma_clk_val <= ma_clk_rst_val;
- elsif (ma_half_match = '1') then
-  ma_clk_val <= not ma_clk_val;
+ else
+  ma_clk_val <= ma_clk_val xor ma_half_match;
  end if;
 
 end process;
