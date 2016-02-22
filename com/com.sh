@@ -11,3 +11,4 @@ vcom -quiet ../src/absenc_slave_biss.vhd
 vcom -quiet ../src/absenc_slave_ssi.vhd
 vcom -quiet ../src/absenc_slave_endat.vhd
 vcom -quiet ../src/absenc_slave.vhd
+vcom -quiet ../src/absenc_reader_hssl.vhd

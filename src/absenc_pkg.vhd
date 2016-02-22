@@ -554,6 +554,34 @@ port
 end component;
 
 
+component reader_hssl is
+generic
+(
+ CLK_FREQ: integer
+);
+port
+(
+ -- local clock
+ clk: in std_logic;
+ rst: in std_logic;
+
+ -- sender clock
+ sclk: in std_logic;
+
+ -- sender out, reader in
+ sori: in std_logic;
+
+ -- actual data to send and length
+ data: out std_logic_vector;
+
+ -- configuration
+ len: in unsigned;
+ tm_gap: in unsigned
+);
+
+end component;
+
+
 --
 -- utilities
 
