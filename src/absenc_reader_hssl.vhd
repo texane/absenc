@@ -1,5 +1,6 @@
 --
--- HSSL reader implementation
+-- HSSL reader implementation (Attocube ID3010 interferometer)
+-- IDS_Manual_v2.0.0.pdf, page 20
 -- sampling is done on the falling edge
 -- state is updated on the rising edge
 -- data sent MSb first, encoded using 2's complement
