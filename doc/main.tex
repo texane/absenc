@@ -108,7 +108,7 @@ The master implements the following data conversion pipeline:
 \item HSSL
    \begin{itemize}
    \item reader only,
-   \item stand alone, no master or slave interface.
+   \item no \textit{master} or \textit{slave} interface.
    \end{itemize}
 \end{itemize}
 
@@ -135,7 +135,23 @@ The package has been tested with the following slaves:
 
 
 \subsection{Performances}
-\todo
+
+\subsubsection{EnDAT}
+\paragraph{}
+The following tests were done using a ROQ425 EnDAT 25 bits encoder. The master
+clock frequency was made variable, along with the cable length thus the signal
+propagation time.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c |}
+    \hline
+    cable length & propagation delay & validated frequency \\ \hline
+    3.5m         & 141ns             & 2.77MHz             \\ \hline
+    20m          & 392ns             & 961KHz              \\ \hline
+    30m          & 478ns             & 961KHz              \\ \hline
+    50m          & 709ns             & 595KHz              \\ \hline
+    \end{tabular}
+\end{center}
 
 
 %%
