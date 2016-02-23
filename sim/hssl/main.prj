@@ -1,0 +1,4 @@
+vhdl work ../../src/absenc_pkg.vhd
+vhdl work ../../src/absenc_utils.vhd
+vhdl work ../../src/absenc_reader_hssl.vhd
+vhdl work ./main.vhd

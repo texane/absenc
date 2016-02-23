@@ -49,24 +49,6 @@ constant DATA_LEN: integer := data'length;
 
 
 --
--- hssl state machine
-
-type hssl_state_t is
-(
- HSSL_IDLE,
- HSSL_DATA,
- HSSL_LATCH,
- HSSL_TP
-);
-
-constant HSSL_TMOUT: hssl_state_t := HSSL_IDLE;
-constant HSSL_ERR: hssl_state_t := HSSL_IDLE;
-
-signal curr_state: hssl_state_t;
-signal next_state: hssl_state_t;
-
-
---
 -- conversion pipeline
 
 type conv_state_t is
@@ -98,12 +80,13 @@ signal tm_match: std_logic;
 --
 -- general counter
 
-signal count_val:
- unsigned(work.absenc_pkg.integer_length(DATA_LEN) - 1 downto 0);
+signal count_val: unsigned(len'range);
 signal count_top: unsigned(count_val'range);
 signal count_top_latched: unsigned(count_val'range);
 signal count_rst: std_logic;
 signal count_match: std_logic;
+signal count_match_pre: std_logic;
+signal count_match_edge: std_logic;
 
 
 --
@@ -115,7 +98,6 @@ signal count_match: std_logic;
 signal sclk_pre: std_logic;
 signal sclk_redge: std_logic;
 signal sclk_fedge: std_logic;
-signal sclk_edge: std_logic;
 
 
 --
@@ -177,8 +159,6 @@ begin
 
 end process;
 
-sclk_edge <= sclk_redge;
-
 
 --
 -- general purpose counter
@@ -192,8 +172,8 @@ begin
  wait until rising_edge(clk);
 
  if (count_rst = '1') then
-  count_val <= to_unsigned(integer(1), count_val'length);
- elsif (sclk_edge = '1') then
+  count_val <= to_unsigned(integer(0), count_val'length);
+ elsif (sclk_fedge = '1') then
   count_val <= count_val + 1;
  end if;
 
@@ -217,6 +197,13 @@ end process;
 
 count_match <= '1' when (count_val = count_top_latched) else '0';
 
+process
+begin
+ wait until rising_edge(clk);
+ count_match_edge <= (not count_match_pre) and count_match;
+ count_match_pre <= count_match;
+end process;
+
 
 --
 -- timeout counter
@@ -229,7 +216,7 @@ begin
 
  tm_match <= '0';
 
- if ((rst or sclk_edge) = '1') then
+ if ((rst or sclk_redge or sclk_fedge) = '1') then
   tm_val <= tm_top;
  elsif (tm_val = 0) then
   tm_val <= tm_top;
@@ -262,6 +249,8 @@ end process;
 -- extend_sign
 -- latched to data
 -- bin_to_sfixed (implemented in top)
+
+sipo_latch <= count_match_edge;
 
 process
 begin
@@ -353,74 +342,13 @@ process
 begin
  wait until rising_edge(clk);
 
- if (rst = '1') then
-  curr_state <= HSSL_IDLE;
- elsif (tm_match = '1') then
-  curr_state <= HSSL_TMOUT;
- elsif (sclk_redge = '1') then
-  curr_state <= next_state;
- end if;
-
-end process;
-
-
-process(curr_state, count_match, tm_match)
-begin
- 
- next_state <= curr_state;
-
- case curr_state is
-
-  when HSSL_IDLE =>
-   next_state <= HSSL_DATA;
-
-  when HSSL_DATA =>
-   if count_match = '1' then
-    next_state <= HSSL_LATCH;
-   else
-    next_state <= HSSL_DATA;
-   end if;
-
-  when HSSL_LATCH =>
-   next_state <= HSSL_TP;
-
-  when HSSL_TP =>
-   if (tm_match = '1') then
-    next_state <= HSSL_IDLE;
-   end if;
-
-  when others =>
-   next_state <= HSSL_ERR;
-
- end case;
-
-end process;
-
-
-process
-begin
- wait until rising_edge(clk);
-
  count_top <= (count_top'range => '0');
  count_rst <= '0';
- sipo_latch <= '0';
 
- case curr_state is
-
-  when HSSL_IDLE =>
-   count_top <= len(count_top'range);
-   count_rst <= '1';
-
-  when HSSL_DATA =>
-
-  when HSSL_LATCH =>
-   sipo_latch <= '1';
-
-  when HSSL_TP =>
-
-  when others =>
-
- end case;
+ if (tm_match = '1') then
+  count_top <= len;
+  count_rst <= '1';
+ end if;
 
 end process;
 
