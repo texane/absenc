@@ -311,7 +311,7 @@ begin
 
  wait until rising_edge(clk);
 
- if (ma_clk_redge = '1') then
+ if (ma_clk_edge = '1') then
   sipo_val <= sipo_val(sipo_val'length - 2 downto 0) & miso;
  end if;
 
