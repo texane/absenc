@@ -70,7 +70,7 @@ architecture absenc_master_biss_rtl of master_biss is
 -- http://biss-interface.com/files/Bissinterface_c5es.pdf, page 18
 
 constant TM_VAL: integer := work.absenc_pkg.us_to_count
- (work.absenc_pkg.MASTER_DEFAULT_TM_US, CLK_FREQ, tm_top'length);
+ (15, CLK_FREQ, tm_top'length);
 
 
 --
